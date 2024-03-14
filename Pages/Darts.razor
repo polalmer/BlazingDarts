@@ -57,15 +57,15 @@ else{
 
 
 @code {
-    private bool playing = false;
-    private string playerName = string.Empty;
-    private int multiplikator = 1;
-    private List<Player> players = [];
+    public bool playing = false;
+    public string playerName = string.Empty;
+    public int multiplikator = 1;
+    public List<Player> players = [];
 
     private Player currentPlayer;
     private int playerIndex = 0;
 
-    private void HandleThrow(int value)
+    private async void HandleThrow(int value)
     {
         int hit = multiplikator * value;
         currentPlayer.score -= hit;
@@ -74,7 +74,7 @@ else{
         if(currentPlayer.score == 0 && multiplikator == 2)
         {
             //Checkout
-            GameWon(currentPlayer);
+            await GameWon(currentPlayer);
         }
         else if(currentPlayer.score <= 1)
         {
@@ -110,10 +110,14 @@ else{
         currentPlayer = players[playerIndex]; 
     }
 
-    private void GameWon(Player winner)
+    private async Task GameWon(Player winner)
     {
         winner.throws.Add(currentPlayer.lastThree);
         winner.lastThree = (null, null, null);
         //win game or so
+        winner.legsWon++;
+
+        Api api = new();
+        await api.SendMatch(this);
     }
 }

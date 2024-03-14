@@ -7,6 +7,7 @@ public class Player(string Name)
     public List<Throws> throws = [];
     public string name = Name;
     public int score = 501;
+    public int legsWon = 0;
     public Throws lastThree = (null, null, null);
 
     public void AddThrow(int hit)
