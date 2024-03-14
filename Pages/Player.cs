@@ -27,7 +27,7 @@ public class Player(string Name)
 
     public void ResetLastThree()
     {
-        score += lastThree.first ?? 0 + lastThree.second ?? 0 + lastThree.third ?? 0;
+        score += (lastThree.first ?? 0) + (lastThree.second ?? 0) + (lastThree.third ?? 0);
     }
 }
 
