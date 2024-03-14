@@ -1,21 +1,26 @@
 ﻿@page "/"
+@using Classes;
 
 <PageTitle>BlazingDarts</PageTitle>
 
+@if(playing){
 <div>
     <div class="ScoreBoard">
-        <input type="text" @bind="player.Value" readonly />
+        @foreach(Player player in players){
+            <label>Name:@player.name</label>
+            <input type="text" @bind="@player.score" readonly />
+        }
     </div>
     <div class="InputContainer">
         <div class="RadioButtonContainer">
             <label class="RadioLabel">
-                <input type="radio" @bind="@multiplikator" value="1" checked="@IsSingle" /> Single
+                <input type="radio" @bind="@multiplikator"/> Single
             </label>
             <label class="RadioLabel">
-                <input type="radio" @bind="@multiplikator" value="2" /> Double
+                <input type="radio" @bind="@multiplikator"/> Double
             </label>
             <label class="RadioLabel">
-                <input type="radio" @bind="@multiplikator" value="3" /> Triple
+                <input type="radio" @bind="@multiplikator"/> Triple
             </label>
         </div>
         <div class="ButtonsContainer">
@@ -36,12 +41,34 @@
             </div>
         </div>
     </div>
-</div>
+</div>   
+}
+else{
+    <input type="text" @bind="playerName"/>
+    <ul>
+        @foreach(Player player in players){
+            <li>@player.name</li>
+        }
+    </ul>
+    <button @onclick="() => {
+        players.Add(new Player(playerName));
+        playerName = string.Empty;
+        }"
+    >Add Player</button>
+    <button @onclick="() => {playing = true;}">Start Game</button>
+}
+
 
 @code {
-    private int playerValue;
-    private int multiplikator = 1; // assuming it's an integer property
-    private bool IsSingle => multiplikator == 1;
+    private bool playing = false;
+    private string playerName;
+    private int multiplikator = 1;
+    private List<Player> players = [];
+
+    private void AddPlayer(){
+        Player player = new(playerName);
+        players.Add(player);
+    }
 
     private void HandleThrow(int value)
     {
