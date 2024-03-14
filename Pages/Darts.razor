@@ -4,44 +4,38 @@
 <PageTitle>BlazingDarts</PageTitle>
 
 @if(playing){
-<div>
-    <div class="ScoreBoard">
-        @foreach(Player player in players){
-            <label>Name:@player.name</label>
-            <input type="text" @bind="@player.score" readonly />
-        }
-    </div>
-    <div class="InputContainer">
-        <div class="RadioButtonContainer">
-            <label class="RadioLabel">
-                <input type="radio" @bind="@multiplikator"/> Single
-            </label>
-            <label class="RadioLabel">
-                <input type="radio" @bind="@multiplikator"/> Double
-            </label>
-            <label class="RadioLabel">
-                <input type="radio" @bind="@multiplikator"/> Triple
-            </label>
-        </div>
-        <div class="ButtonsContainer">
-            @foreach (var row in Enumerable.Range(1, 5))
-            {
-                <div class="Buttons" key="@row">
-                    @foreach (var num in Enumerable.Range(1, 4))
-                    {
-                        <button class="Numberbutton" @onclick="() => HandleThrow((row - 1) * 4 + num)" key="@num">
-                            @((row - 1) * 4 + num)
-                        </button>
-                    }
-                </div>
+    <div>
+        <div class="ScoreBoard">
+            @foreach(Player player in players){
+                <label>Name:@player.name</label>
+                <input type="text" @bind="@player.score" readonly />
             }
-            <div class="Buttons">
-                <button class="Numberbutton" @onclick="() => HandleThrow(25)">Bull</button>
-                <button class="Missedbutton" @onclick="() => HandleThrow(0)">Miss</button>
+        </div>
+        <div class="InputContainer">
+            <InputSelect @bind-Value="multiplikator">
+                <option value="1">Single</option>
+                <option value="2">Double</option>
+                <option value="3">Triple</option>
+            </InputSelect>
+            <div class="ButtonsContainer">
+                @foreach (var row in Enumerable.Range(1, 5))
+                {
+                    <div class="Buttons" key="@row">
+                        @foreach (var num in Enumerable.Range(1, 4))
+                        {
+                            <button class="Numberbutton" @onclick="() => HandleThrow((row - 1) * 4 + num)" key="@num">
+                                @((row - 1) * 4 + num)
+                            </button>
+                        }
+                    </div>
+                }
+                <div class="Buttons">
+                    <button class="Numberbutton" @onclick="() => HandleThrow(25)">Bull</button>
+                    <button class="Missedbutton" @onclick="() => HandleThrow(0)">Miss</button>
+                </div>
             </div>
         </div>
-    </div>
-</div>   
+    </div>   
 }
 else{
     <input type="text" @bind="playerName"/>
@@ -50,12 +44,8 @@ else{
             <li>@player.name</li>
         }
     </ul>
-    <button @onclick="() => {
-        players.Add(new Player(playerName));
-        playerName = string.Empty;
-        }"
-    >Add Player</button>
-    <button @onclick="() => {playing = true;}">Start Game</button>
+    <button @onclick="() => AddPlayer()">Add Player</button>
+    <button @onclick="() => StartGame()">Start Game</button>
 }
 
 
@@ -65,13 +55,18 @@ else{
     private int multiplikator = 1;
     private List<Player> players = [];
 
-    private void AddPlayer(){
-        Player player = new(playerName);
-        players.Add(player);
-    }
+    private Player currentPlayer;
 
     private void HandleThrow(int value)
     {
-        // Handle throw logic here
+    }
+
+    private void AddPlayer(){
+        players.Add(new Player(playerName));
+        playerName = string.Empty;
+    }
+
+    private void StartGame(){
+        playing = true; 
     }
 }
