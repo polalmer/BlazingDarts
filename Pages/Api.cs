@@ -1,11 +1,12 @@
 ﻿using BlazingDarts.Pages;
-using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
 
 namespace Classes;
 
 public class Api()
 {
-    readonly string URL = "192.168.88.37:3001";
+    readonly string URL = "http://192.168.88.37:3001";
 
     public async Task SendMatch(Darts game)
     {
@@ -13,7 +14,12 @@ public class Api()
         {
             BaseAddress = new Uri(URL)
         };
-        var result = await client.PostAsJsonAsync<RequestGame>("/api/insertGame", new(game));
+        var requestData = new RequestGame(game);
+        var json = JsonSerializer.Serialize(requestData);
+
+        // Post the serialized data to the API endpoint
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var result = await client.PostAsync("api/insertGame", content);
     }
 
     class RequestGame(Darts game)
