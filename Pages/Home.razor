@@ -1,7 +1,50 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>BlazingDarts</PageTitle>
 
-<h1>Hello, world!</h1>
+<div>
+    <div class="ScoreBoard">
+        <input type="text" @bind="player.Value" readonly />
+    </div>
+    <div class="InputContainer">
+        <div class="RadioButtonContainer">
+            <label class="RadioLabel">
+                <input type="radio" @bind="@multiplikator" value="1" checked="@IsSingle" /> Single
+            </label>
+            <label class="RadioLabel">
+                <input type="radio" @bind="@multiplikator" value="2" /> Double
+            </label>
+            <label class="RadioLabel">
+                <input type="radio" @bind="@multiplikator" value="3" /> Triple
+            </label>
+        </div>
+        <div class="ButtonsContainer">
+            @foreach (var row in Enumerable.Range(1, 5))
+            {
+                <div class="Buttons" key="@row">
+                    @foreach (var num in Enumerable.Range(1, 4))
+                    {
+                        <button class="Numberbutton" @onclick="() => HandleThrow((row - 1) * 4 + num)" key="@num">
+                            @((row - 1) * 4 + num)
+                        </button>
+                    }
+                </div>
+            }
+            <div class="Buttons">
+                <button class="Numberbutton" @onclick="() => HandleThrow(25)">Bull</button>
+                <button class="Missedbutton" @onclick="() => HandleThrow(0)">Miss</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-Welcome to your new app.
+@code {
+    private int playerValue;
+    private int multiplikator = 1; // assuming it's an integer property
+    private bool IsSingle => multiplikator == 1;
+
+    private void HandleThrow(int value)
+    {
+        // Handle throw logic here
+    }
+}
