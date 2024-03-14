@@ -8,7 +8,14 @@
         <div class="ScoreBoard">
             @foreach(Player player in players){
                 <label>Name:@player.name</label>
-                <input type="text" @bind="@player.score" readonly />
+                @if(player == currentPlayer)
+                {
+                    <input type="text" @bind="@player.score" style="color:blue" readonly />
+                }
+                else
+                {
+                    <input type="text" @bind="@player.score" readonly />
+                }             
             }
         </div>
         <div class="InputContainer">
@@ -51,14 +58,46 @@ else{
 
 @code {
     private bool playing = false;
-    private string playerName;
+    private string playerName = string.Empty;
     private int multiplikator = 1;
     private List<Player> players = [];
 
     private Player currentPlayer;
+    private int playerIndex = 0;
 
     private void HandleThrow(int value)
     {
+        int hit = multiplikator * value;
+        currentPlayer.score -= hit;
+        currentPlayer.AddThrow(hit);
+
+        if(currentPlayer.score == 0 && multiplikator == 2)
+        {
+            //Checkout
+            GameWon(currentPlayer);
+        }
+        else if(currentPlayer.score <= 1)
+        {
+            //over throw
+            currentPlayer.ResetLastThree();
+        }
+
+        if(currentPlayer.lastThree.first is not null)
+        {
+            //next player
+            currentPlayer.throws.Add(currentPlayer.lastThree);
+            currentPlayer.lastThree = (null, null, null);
+
+            if(playerIndex == players.Count - 1)
+            {
+                playerIndex = 0;
+            }
+            else
+            {
+                playerIndex++;
+            }
+            currentPlayer = players[playerIndex];
+        }
     }
 
     private void AddPlayer(){
@@ -67,6 +106,14 @@ else{
     }
 
     private void StartGame(){
-        playing = true; 
+        playing = true;
+        currentPlayer = players[playerIndex]; 
+    }
+
+    private void GameWon(Player winner)
+    {
+        winner.throws.Add(currentPlayer.lastThree);
+        winner.lastThree = (null, null, null);
+        //win game or so
     }
 }

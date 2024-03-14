@@ -1,6 +1,6 @@
 namespace Classes;
 
-using Throws = (int?, int?, int?);
+using Throws = (int? first, int? second, int? third);
 
 public class Player(string Name)
 {
@@ -8,6 +8,27 @@ public class Player(string Name)
     public string name = Name;
     public int score = 501;
     public Throws lastThree = (null, null, null);
+
+    public void AddThrow(int hit)
+    {
+        if (lastThree.first is null)
+        {
+            lastThree.first = hit;
+        }
+        else if (lastThree.second is null)
+        {
+            lastThree.second = hit;
+        }
+        else
+        {
+            lastThree.third = hit;
+        }
+    }
+
+    public void ResetLastThree()
+    {
+        score += lastThree.first ?? 0 + lastThree.second ?? 0 + lastThree.third ?? 0;
+    }
 }
 
 
