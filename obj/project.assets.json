@@ -2062,11 +2062,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\hasht\\source\\repos\\polalmer\\Blazor_Dart\\BlazingDarts\\BlazingDarts.csproj",
+      "projectUniqueName": "C:\\Users\\hasht\\source\\repos\\polalmer\\BlazingDarts\\BlazingDarts.csproj",
       "projectName": "BlazingDarts",
-      "projectPath": "C:\\Users\\hasht\\source\\repos\\polalmer\\Blazor_Dart\\BlazingDarts\\BlazingDarts.csproj",
+      "projectPath": "C:\\Users\\hasht\\source\\repos\\polalmer\\BlazingDarts\\BlazingDarts.csproj",
       "packagesPath": "C:\\Users\\hasht\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\hasht\\source\\repos\\polalmer\\Blazor_Dart\\BlazingDarts\\obj\\",
+      "outputPath": "C:\\Users\\hasht\\source\\repos\\polalmer\\BlazingDarts\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\hasht\\AppData\\Roaming\\NuGet\\NuGet.Config"
