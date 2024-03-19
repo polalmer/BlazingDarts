@@ -7,7 +7,7 @@ namespace Classes;
 
 public class Api()
 {
-    readonly string URL = "192.168.88.37:3001";
+    readonly string URL = "http://192.168.88.37:3001";
 
     public async Task SendMatch(Darts game)
     {

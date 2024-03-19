@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Classes;
+@inject Api api;
 
 <PageTitle>BlazingDarts</PageTitle>
 
@@ -117,7 +118,6 @@ else{
         //win game or so
         winner.legsWon++;
 
-        Api api = new();
         await api.SendMatch(this);
     }
 }
