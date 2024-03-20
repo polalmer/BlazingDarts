@@ -8,42 +8,42 @@
     <div>
         <div class="ScoreBoard">
             @foreach(Player player in players){
-                <label>Name:@player.name</label>
+                <label>Name: @player.name</label>
                 @if(player == currentPlayer)
                 {
-                    <input type="text" @bind="@player.score" style="color:blue" readonly />
+                    <input type="text" @bind="@player.score" class="score-input" readonly />
                 }
                 else
                 {
-                    <input type="text" @bind="@player.score" readonly />
+                    <input type="text" @bind="@player.score" class="score-input" readonly />
                 }             
             }
         </div>
-        <div class="InputContainer">
+        <div class="btn-group-vertical">
             <InputSelect @bind-Value="multiplikator">
                 <option value="1">Single</option>
                 <option value="2">Double</option>
                 <option value="3">Triple</option>
             </InputSelect>
-            <div class="ButtonsContainer">
+            <div class="btn-group-vertical">
                 @foreach (var row in Enumerable.Range(1, 5))
                 {
-                    <div class="Buttons" key="@row">
+                    <div class="btn-group" key="@row">
                         @foreach (var num in Enumerable.Range(1, 4))
                         {
-                            <button class="Numberbutton" @onclick="() => HandleThrow((row - 1) * 4 + num)" key="@num">
+                            <button class="btn-primary custom-btn" @onclick="() => HandleThrow((row - 1) * 4 + num)" key="@num">
                                 @((row - 1) * 4 + num)
                             </button>
                         }
                     </div>
                 }
-                <div class="Buttons">
-                    <button class="Numberbutton" @onclick="() => HandleThrow(25)">Bull</button>
-                    <button class="Missedbutton" @onclick="() => HandleThrow(0)">Miss</button>
+                <div class="btn-group">
+                    <button class="btn-primary custom-btn" @onclick="() => HandleThrow(25)">Bull</button>
+                    <button class="btn-secondary custom-btn" @onclick="() => HandleThrow(0)">Miss</button>
                 </div>
             </div>
         </div>
-    </div>   
+    </div>
 }
 else{
     <input type="text" @bind="playerName"/>
