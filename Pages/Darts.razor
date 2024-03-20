@@ -31,15 +31,15 @@
                     <div class="btn-group" key="@row">
                         @foreach (var num in Enumerable.Range(1, 4))
                         {
-                            <button class="btn-primary custom-btn" @onclick="() => HandleThrow((row - 1) * 4 + num)" key="@num">
+                            <button class="btn-primary custom-btn" @onclick="async() => await HandleThrow((row - 1) * 4 + num)" key="@num">
                                 @((row - 1) * 4 + num)
                             </button>
                         }
                     </div>
                 }
                 <div class="btn-group">
-                    <button class="btn-primary custom-btn" @onclick="() => HandleThrow(25)">Bull</button>
-                    <button class="btn-secondary custom-btn" @onclick="() => HandleThrow(0)">Miss</button>
+                    <button class="btn-primary custom-btn" @onclick="async() => await HandleThrow(25)">Bull</button>
+                    <button class="btn-secondary custom-btn" @onclick="async() => await HandleThrow(0)">Miss</button>
                 </div>
             </div>
         </div>
@@ -78,7 +78,7 @@ else if(playState == PlayState.resultScreen){
     private Player? currentPlayer;
     private int playerIndex = 0;
 
-    private async void HandleThrow(int value)
+    private async Task HandleThrow(int value)
     {
         int hit = multiplikator * value;
         currentPlayer!.score -= hit;
@@ -133,7 +133,7 @@ else if(playState == PlayState.resultScreen){
         winner.legsWon++;
         playState = PlayState.resultScreen;
 
-        await api.SendMatch(this);
+        await api.SendMatch(players.ToList());
     }
 
     private void ResetGame()

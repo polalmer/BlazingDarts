@@ -1,4 +1,5 @@
 ﻿using BlazingDarts.Pages;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -9,15 +10,10 @@ public class Api()
 {
     readonly string URL = "http://192.168.88.37:3001";
 
-    public async Task SendMatch(Darts game)
+    public async Task SendMatch(List<Player> players)
     {
         // Serialize the data to JSON
-        var request = new RequestGame(game);
-
-        var json = JsonSerializer.Serialize(request);
-
-        // Create the HttpContent for the request
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var request = new RequestGame(players);
 
         using HttpClient httpClient = new()
         {
@@ -25,19 +21,19 @@ public class Api()
         };
 
         // Send the POST request
-        var response = await httpClient.PostAsync("api/insertGame", content);
+        var response = await httpClient.PostAsJsonAsync("api/insertGame", request);
         await response.Content.ReadAsStringAsync();
     }
 
-    class RequestGame(Darts game)
+    class RequestGame(List<Player> players)
     {
         [JsonPropertyName("spieler1")]
-        public string spieler1 = game.players[0].name;
+        public string spieler1 = players[0].name;
         [JsonPropertyName("spieler2")]
-        public string spieler2 = game.players[1].name;
+        public string spieler2 = players[1].name;
         [JsonPropertyName("spieler1legs")]
-        public int spieler1legs = game.players[0].legsWon;
+        public int spieler1legs = players[0].legsWon;
         [JsonPropertyName("spieler2legs")]
-        public int spieler2legs = game.players[1].legsWon;
+        public int spieler2legs = players[1].legsWon;
     }
 }
