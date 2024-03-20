@@ -1,7 +1,4 @@
-﻿using BlazingDarts.Pages;
-using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
+﻿using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 
 namespace Classes;
@@ -12,13 +9,12 @@ public class Api()
 
     public async Task SendMatch(List<Player> players)
     {
-        // Serialize the data to JSON
-        var request = new RequestGame(players);
-
         using HttpClient httpClient = new()
         {
             BaseAddress = new Uri(URL)
         };
+
+        RequestGame request = new(players);
 
         // Send the POST request
         var response = await httpClient.PostAsJsonAsync("api/insertGame", request);
@@ -28,12 +24,15 @@ public class Api()
     class RequestGame(List<Player> players)
     {
         [JsonPropertyName("spieler1")]
-        public string spieler1 = players[0].name;
+        public string Spieler1 { get; set; } = players.First().name;
+
         [JsonPropertyName("spieler2")]
-        public string spieler2 = players[1].name;
+        public string Spieler2 { get; set; } = players.Last().name;
+
         [JsonPropertyName("spieler1legs")]
-        public int spieler1legs = players[0].legsWon;
+        public int Spieler1legs { get; set; } = players.First().legsWon;
+
         [JsonPropertyName("spieler2legs")]
-        public int spieler2legs = players[1].legsWon;
+        public int Spieler2legs { get; set; } = players.Last().legsWon;
     }
 }
