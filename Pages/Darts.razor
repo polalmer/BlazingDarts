@@ -58,7 +58,7 @@ else if(playState == PlayState.customerSelect){
     <button @onclick="() => StartGame()">Start Game</button>
 }
 else if(playState == PlayState.resultScreen){
-    <h1>Winner: @currentPlayer.name</h1>
+    <h1>Winner: @currentPlayer?.name</h1>
     <button @onclick="() => ResetGame()">New Game</button>
 }
 
@@ -81,8 +81,8 @@ else if(playState == PlayState.resultScreen){
     private async void HandleThrow(int value)
     {
         int hit = multiplikator * value;
-        currentPlayer.score -= hit;
-        currentPlayer.AddThrow(hit);
+        currentPlayer!.score -= hit;
+        currentPlayer!.AddThrow(hit);
 
         if(currentPlayer.score == 0 && multiplikator == 2)
         {
@@ -127,7 +127,7 @@ else if(playState == PlayState.resultScreen){
 
     private async Task GameWon(Player winner)
     {
-        winner.throws.Add(currentPlayer.lastThree);
+        winner.throws.Add(currentPlayer!.lastThree);
         winner.lastThree = (null, null, null);
         //win game or so
         winner.legsWon++;
