@@ -4,7 +4,7 @@
 
 <PageTitle>BlazingDarts</PageTitle>
 
-@if(playing){
+@if(playState == PlayState.playing){
     <div>
         <div class="ScoreBoard">
             @foreach(Player player in players){
@@ -45,7 +45,7 @@
         </div>
     </div>
 }
-else{
+else if(playState == PlayState.customerSelect){
     <div>
         <input type="text" @bind="playerName"/>
         <button @onclick="() => AddPlayer()">Add Player</button>
@@ -57,15 +57,25 @@ else{
     </ul>  
     <button @onclick="() => StartGame()">Start Game</button>
 }
+else if(playState == PlayState.resultScreen){
+    <h1>Winner: @currentPlayer.name</h1>
+    <button @onclick="() => ResetGame()">New Game</button>
+}
 
 
 @code {
-    public bool playing = false;
+    public enum PlayState{
+        customerSelect,
+        playing,
+        resultScreen
+    }
+
+    public PlayState playState = PlayState.customerSelect;
     public string playerName = string.Empty;
     public int multiplikator = 1;
     public List<Player> players = [];
 
-    private Player currentPlayer;
+    private Player? currentPlayer;
     private int playerIndex = 0;
 
     private async void HandleThrow(int value)
@@ -104,13 +114,14 @@ else{
     }
 
     private void AddPlayer(){
+        if(players.Count() == 2) return;
         players.Add(new Player(playerName));
         playerName = string.Empty;
     }
 
     private void StartGame(){
         if(players.Count() != 2) return;
-        playing = true;
+        playState = PlayState.playing;
         currentPlayer = players[playerIndex]; 
     }
 
@@ -120,7 +131,19 @@ else{
         winner.lastThree = (null, null, null);
         //win game or so
         winner.legsWon++;
+        playState = PlayState.resultScreen;
 
         await api.SendMatch(this);
+    }
+
+    private void ResetGame()
+    {
+        playState = PlayState.customerSelect;
+        playerName = string.Empty;
+        multiplikator = 1;
+        players = [];
+
+        currentPlayer = null;
+        playerIndex = 0;
     }
 }
