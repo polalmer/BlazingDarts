@@ -16,21 +16,6 @@ a, .btn-link {
     border-color: #1861ac;
 }
 
-.custom-btn {
-    width: 50px; /* Adjust width as needed */
-    height: 50px; /* Adjust height as needed */
-    background-color: blue;
-    color: white;
-    border: none;
-    margin: 5px; /* Adjust margin as needed */
-    font-size: 16px; /* Adjust font size as needed */
-}
-
-.score-input {
-    color: blue; /* Color for the score input */
-    /* Add any other styles for the score input */
-}
-
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }

@@ -8,15 +8,18 @@
     <div>
         <div class="ScoreBoard">
             @foreach(Player player in players){
-                <label>Name: @player.name</label>
-                @if(player == currentPlayer)
-                {
-                    <input type="text" @bind="@player.score" class="score-input" readonly />
-                }
-                else
-                {
-                    <input type="text" @bind="@player.score" readonly />
-                }             
+                <div>
+                    <label>Name: @player.name</label>
+                    @if(player == currentPlayer)
+                    {
+                        <input type="text" @bind="@player.score" class="score-input no-border" readonly />
+                    }
+                    else
+                    {
+                        <input type="text" @bind="@player.score" class="no-border" readonly />
+                    } 
+                    <a>Legs: @player.legsWon</a>  
+                </div>
             }
         </div>
         <div class="btn-group-vertical">
@@ -38,8 +41,8 @@
                     </div>
                 }
                 <div class="btn-group">
-                    <button class="btn-primary custom-btn" @onclick="async() => await HandleThrow(25)">Bull</button>
-                    <button class="btn-secondary custom-btn" @onclick="async() => await HandleThrow(0)">Miss</button>
+                    <button class="custom-btn" @onclick="async() => await HandleThrow(25)">Bull</button>
+                    <button class="custom-red" @onclick="async() => await HandleThrow(0)">Miss</button>
                 </div>
             </div>
         </div>
@@ -54,7 +57,9 @@ else if(playState == PlayState.customerSelect){
         @foreach(Player player in players){
             <li>@player.name</li>
         }
-    </ul>  
+    </ul>
+    <text>Legs to win:</text> 
+    <input type="number" @bind="legsToWin"/>
     <button @onclick="() => StartGame()">Start Game</button>
 }
 else if(playState == PlayState.resultScreen){
@@ -74,6 +79,8 @@ else if(playState == PlayState.resultScreen){
     public string playerName = string.Empty;
     public int multiplikator = 1;
     public List<Player> players = [];
+
+    public int legsToWin = 1;
 
     private Player? currentPlayer;
     private int playerIndex = 0;
@@ -131,9 +138,19 @@ else if(playState == PlayState.resultScreen){
         winner.lastThree = (null, null, null);
         //win game or so
         winner.legsWon++;
-        playState = PlayState.resultScreen;
 
-        await api.SendMatch(players.ToList());
+        if(winner.legsWon == legsToWin)
+        {
+            playState = PlayState.resultScreen;
+            await api.SendMatch(players.ToList());
+        }
+        else
+        {
+            foreach(Player player in players){
+                player.score = 501;
+                player.lastThree = (null,null,null);
+            }
+        }        
     }
 
     private void ResetGame()
@@ -145,5 +162,6 @@ else if(playState == PlayState.resultScreen){
 
         currentPlayer = null;
         playerIndex = 0;
+        legsToWin = 1;
     }
 }
