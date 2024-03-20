@@ -15,7 +15,7 @@
                 }
                 else
                 {
-                    <input type="text" @bind="@player.score" class="score-input" readonly />
+                    <input type="text" @bind="@player.score" readonly />
                 }             
             }
         </div>
@@ -46,13 +46,15 @@
     </div>
 }
 else{
-    <input type="text" @bind="playerName"/>
+    <div>
+        <input type="text" @bind="playerName"/>
+        <button @onclick="() => AddPlayer()">Add Player</button>
+    </div>   
     <ul>
         @foreach(Player player in players){
             <li>@player.name</li>
         }
-    </ul>
-    <button @onclick="() => AddPlayer()">Add Player</button>
+    </ul>  
     <button @onclick="() => StartGame()">Start Game</button>
 }
 
@@ -107,6 +109,7 @@ else{
     }
 
     private void StartGame(){
+        if(players.Count() != 2) return;
         playing = true;
         currentPlayer = players[playerIndex]; 
     }
